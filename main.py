@@ -10,11 +10,11 @@ import sys
 import Adafruit_DHT
 from RPIO import PWM
 mintemp = 30 #Minimum temperature required to trigger the "stove on" status
-sensor = Adafruit_DHT.DHT11 #Sensor type. Change to Adafruit_DHT.DHT22 if using a DHT 22 sensor.
+sensor = Adafruit_DHT.DHT11 #Sensor type. 
 dhtpin = 4 #GPIO pin the DHT is connected to
 
 
-credentials = {"devicekey":"xxxxxxxxx"} #Replace with your unique SIM device key
+credentials = {"devicekey":"2tVU6Pnf"} #Replace with your unique SIM device key
 #Instantiating a hologram instance
 hologram = HologramCloud(credentials, network='cellular', authentication_type="csrpsk")
 
