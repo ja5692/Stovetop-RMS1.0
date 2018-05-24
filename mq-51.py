@@ -89,8 +89,8 @@ def main():
                   else:
                            print("DANGER!! Gas leakege detected!!")
                            break
-            count += 1
-            time.sleep(1)
+                  count += 1
+                  time.sleep(1)
 
                     
 while True:
