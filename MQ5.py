@@ -1,24 +1,20 @@
-Python 3.5.3 (default, Jan 19 2017, 14:11:04) 
-[GCC 6.3.0 20170124] on linux
-Type "copyright", "credits" or "license()" for more information.
->>> #*************************************************************************************************
 from Hologram.HologramCloud import HologramCloud
 import RPi.GPIO as GPIO
+import time
 import json
 import threading
-import time
 import sys
 
-                                      # change these as desired - they're the pins connected from the
-                                      # SPI port on the ADC to the pi
+
+# change these as desired - they're the pins connected from the
+# SPI port on the ADC to the Cobbler
 SPICLK = 11
 SPIMISO = 9
 SPIMOSI = 10
 SPICS = 8
 smokesensor_dpin = 26
 smokesensor_apin = 0
-#****************************************************************************************************
-#*******************************Hologram communication***********************************************
+
 credentials = {"devicekey":"2tVU6Pnf"}    #Replace with your unique SIM device key
                                           #Instantiating a hologram instance
 hologram = HologramCloud(credentials, network='cellular', authentication_type="csrpsk")
@@ -33,9 +29,9 @@ else:
     print "Hologram is online!"
                                            #Enables Hologram to listen for incoming SMS messages
     recv = hologram.enableSMS()
-#****************************************************************************************************
-#***************************************port initiaton***********************************************
 
+
+#port init
 def init():
          GPIO.setwarnings(False)
          GPIO.cleanup()			#clean up at the end of your script
@@ -81,34 +77,28 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
-#******************************************main loop******************************************************
+#main ioop
 def main():
          init()
          while True:
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
-                  if GPIO.input(smokesensor_dpin): #hologram.sendMessage(json.dumps("No Gas Leak Detected"))
-                           print("No gas Leak Detected")
-                           reply = hologram.sendSMS(phone, "No Gas Detected")
+                  if GPIO.input(smokesensor_dpin):
+                           print("No Gas Leak Detected")
                            time.sleep(0.5)
                   else:
-                           print("Gas Leak detected")#hologram.sendMessage(json.dumps("Gas Leak Detected"))
-                           reply = hologram.sendSMS(phone, "Gas Leak Detected!!")
+                           print("DANGER!! Gas leakege detected!!")
+                           print"Current Gas AD vaule = " +str("%.2f"%((smokelevel/1024.)*5))+" V"
                            time.sleep(0.5)
 
-while True:
-    sms_obj = hologram.popReceivedSMS()
-    if sms_obj is not None:                #If user sends something:
-        message = sms_obj.message
-        phone = "+" + sms_obj.sender
-
-        if message.lower() in "Gas": #If user enters keyword
-             try:
+if __name__ =='__main__':
+         try:
                   main()
                   pass
          except KeyboardInterrupt:
                   pass
 
-hologram.network.disconnect()
 GPIO.cleanup()
+         
+         
          
