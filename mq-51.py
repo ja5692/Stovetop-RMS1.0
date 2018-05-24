@@ -85,12 +85,11 @@ def main():
                   
                   if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas Leak Detected"))
                            print("No Gas Leak Detected")
-                           count = 0
                            time.sleep(0.5)
                   else:
                            print("DANGER!! Gas leakege detected!!")
-                           count = 0
                            break
+                        
                  
 
                     
@@ -102,7 +101,10 @@ while True:
 
         if message.lower() in "gas": #If user enters keyword
             main()
+            break
     time.sleep(1)
 
-hologram.network.disconnect()
 GPIO.cleanup()
+hologram.network.disconnect()
+
+
