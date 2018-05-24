@@ -90,7 +90,7 @@ def main():
                            print("DANGER!! Gas leakege detected!!")
                            break
                   count = 1     
-                  time.sleep(1)
+                  pause
 
                     
 while True:
