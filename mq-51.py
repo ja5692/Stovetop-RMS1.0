@@ -77,25 +77,23 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout <= 1       # first bit is 'null' so drop it
         return adcout
-      
 
-       
 #main ioop
 def main():
-         init()   
+         init()
          while True:
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
-                  if GPIO.input(smokesensor_dpin) == True and not printed:
+                  if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas Leak Detected"))
                            print("No Gas Leak Detected")
-                         
-                           break
-                   
+                           time.sleep(0.5)
                   else:
                            print("DANGER!! Gas leakege detected!!")
                            break
-                  
-                       
+                  count=1     
+                  time.sleep(1)
+
+                    
 while True:
     sms_obj = hologram.popReceivedSMS()
     if sms_obj is not None:                #If user sends something:
@@ -104,8 +102,7 @@ while True:
 
         if message.lower() in "gas": #If user enters keyword
             main()
-          
     time.sleep(1)
- 
-hologram.network.disconnect()
 
+hologram.network.disconnect()
+GPIO.cleanup()
