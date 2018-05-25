@@ -91,6 +91,7 @@ def main():
                            break
                   count = 1
                   time.sleep(1)
+                  quit()
 
                     
 while True:
