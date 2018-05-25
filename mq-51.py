@@ -83,11 +83,13 @@ def main():
          while True:
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
-                  if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas Leak Detected"))
-                           print("No Gas Leak Detected")
+                  if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas/smoke Detected"))
+                           print("No Gas/smoke Detected")
+                           reply = hologram.sendSMS(phone, "No Gas/smoke Detected")
                            time.sleep(0.5)
                   else:
-                           print("DANGER!! Gas leakege detected!!")
+                           print("DANGER!! Gas/smoke detected!!")
+                           reply = hologram.sendSMS(phone, "DANGER!! Gas / smoke detected!!")
                            break
                   count = 1
                   time.sleep(1)
