@@ -27,7 +27,10 @@ if result == False:
 else:
     print "Connection successful!"
     print "Hologram is online!"
-                                           #Enables Hologram to listen for incoming SMS messages
+
+    
+#Enables Hologram to listen for incoming SMS messages
+#*********************************************************************************************
     recv = hologram.enableSMS()
 
 
@@ -88,7 +91,6 @@ def main():
                            time.sleep(0.5)
                   else:
                            print("DANGER!! Gas leakege detected!!")
-                           print"Current Gas AD vaule = " +str("%.2f"%((smokelevel/1024.)*5))+" V"
                            time.sleep(0.5)
 
 while True:
