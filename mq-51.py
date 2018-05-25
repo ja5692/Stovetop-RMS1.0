@@ -89,7 +89,7 @@ def main():
                   else:
                            print("DANGER!! Gas leakege detected!!")
                            break
-                  count += 1
+                  count = 0
                   time.sleep(1)
 
                     
