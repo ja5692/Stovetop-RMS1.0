@@ -1,9 +1,9 @@
 from Hologram.HologramCloud import HologramCloud
-import RPi.GPIO as GPIO
-import time
 import json
 import threading
+import time
 import sys
+from RPIO import PWM
 
 
 # change these as desired - they're the pins connected from the
@@ -14,7 +14,7 @@ SPIMOSI = 10
 SPICS = 8
 smokesensor_dpin = 26
 smokesensor_apin = 0
-
+#***********************************************************************************************
 credentials = {"devicekey":"2tVU6Pnf"}    #Replace with your unique SIM device key
                                           #Instantiating a hologram instance
 hologram = HologramCloud(credentials, network='cellular', authentication_type="csrpsk")
@@ -34,7 +34,7 @@ else:
     recv = hologram.enableSMS()
 
 
-#port init
+#port init************************************************************************************
 def init():
          GPIO.setwarnings(False)
          GPIO.cleanup()			#clean up at the end of your script
@@ -80,7 +80,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
-#main ioop
+#main loop**********************************************************************************************
 def main():
          init()
          while True:
