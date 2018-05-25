@@ -63,7 +63,7 @@ def update():
                     print "No response recieved within 10 minutes, Alert Ignored. Reverting to standby mode."
                     reply = hologram.sendSMS(phone, "No response recieved within 10 minutes, Alert Ignored. Reverting to standby mode.")
                     break
-            count < 1
+            count += 1
             time.sleep(1)
 
                                            #Hologram waits for user input (standby mode)
