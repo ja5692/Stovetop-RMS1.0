@@ -111,10 +111,9 @@ if __name__ =='__main__':
          try:
                   main()
                   break
-        
-                  
+    
 
 GPIO.cleanup()
-hologram.network.disconnect()
-
+         
+         
 
