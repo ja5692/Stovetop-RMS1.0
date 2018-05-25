@@ -102,9 +102,3 @@ while True:
             main()
             break
     time.sleep(1)
-    
-if __name__ =='__main__':
-         try:
-                  main()
-                  break
-    
