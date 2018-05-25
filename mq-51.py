@@ -75,7 +75,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
 
         GPIO.output(cspin, True)
         
-        adcout >>= 1       # first bit is 'null' so drop it
+        adcout <= 1       # first bit is 'null' so drop it
         return adcout
       
 
@@ -88,12 +88,12 @@ def main():
                   
                   if GPIO.input(smokesensor_dpin) == True and not printed:
                            print("No Gas Leak Detected")
-                           printed = True
+                         
                            break
                    
                   else:
                            print("DANGER!! Gas leakege detected!!")
-                           return
+                           break
                   
                        
 while True:
