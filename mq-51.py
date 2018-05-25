@@ -79,14 +79,14 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         return adcout
       
 
-printed = false       
+printed = False       
 #main ioop
 def main():
          init()
          while True:
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
-                  if GPIO.input(smokesensor_dpin) == true and not printed:
+                  if GPIO.input(smokesensor_dpin) == True and not printed:
                            print("No Gas Leak Detected")
                            printed = true
                            break
