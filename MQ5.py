@@ -91,14 +91,19 @@ def main():
                            print"Current Gas AD vaule = " +str("%.2f"%((smokelevel/1024.)*5))+" V"
                            time.sleep(0.5)
 
-if __name__ =='__main__':
-         try:
-                  main()
-                  pass
-         except KeyboardInterrupt:
-                  pass
+while True:
+    sms_obj = hologram.popReceivedSMS()
+    if sms_obj is not None:                #If user sends something:
+        message = sms_obj.message
+        phone = "+" + sms_obj.sender
 
+        if message.lower() in "gas": #If user enters keyword
+            main()
+   
+
+hologram.network.disconnect()
 GPIO.cleanup()
+
          
          
          
