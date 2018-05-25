@@ -5,7 +5,7 @@ import time
 import sys
 import Adafruit_DHT
 from RPIO import PWM
-mintemp = 38                             #Minimum temperature required to trigger the "stove on" status
+mintemp = 30                             #Minimum temperature required to trigger the "stove on" status
 sensor = Adafruit_DHT.DHT11               #Sensor type. 
 dhtpin = 4                                #GPIO pin the DHT is connected to
 
@@ -33,13 +33,13 @@ def update():
                                            #Determine if stove is on or off
     if temperature <= mintemp:
                                            #hologram.sendMessage(json.dumps("Your stove is off." + "Temperature: " + temperature + "C"))
-        print "Your stove is off. " + "Temperature: " + str(temperature) + "C"
-        reply = hologram.sendSMS(phone, "Your stove is off. " + "Temperature: " + str(temperature) + "C")
+        print "Your stove is off. "
+        reply = hologram.sendSMS(phone, "Your stove is off."
 
     else:
                                            #hologram.sendMessage(json.dumps("Your stove is on. Your home is at risk. Please confirm this alert was recieved " + "Temperature: " + temperature + "C"))
-        print "Your stove is on. Your home is at risk. Please confirm this alert was recieved " + "Temperature: " + str(temperature) + "C"
-        reply = hologram.sendSMS(phone, "Your stove is on. Your home is at risk. Please confirm this alert was recieved " + "Temperature:  " + str(temperature) + "C")
+        print "Your stove is on. Your home is at risk. Please confirm this alert was recieved " 
+        reply = hologram.sendSMS(phone, "Your stove is on. Your home is at risk. Please confirm this alert was recieved " 
                                            #Waits for and processes user response to prompt
         count = 0
         while True:
