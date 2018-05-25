@@ -92,10 +92,6 @@ def main():
                            print("DANGER!! Gas leakege detected!!")
                            break
                        
-                       
-                 
-
-                    
 while True:
     sms_obj = hologram.popReceivedSMS()
     if sms_obj is not None:                #If user sends something:
