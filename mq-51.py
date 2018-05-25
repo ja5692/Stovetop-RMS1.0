@@ -102,7 +102,7 @@ while True:
 
         if message.lower() in "gas": #If user enters keyword
             main()
-            quit()
+            
     time.sleep(1)
 
 hologram.network.disconnect()
