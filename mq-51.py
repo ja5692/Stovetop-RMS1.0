@@ -84,7 +84,7 @@ def main():
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
                   if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas/smoke Detected, Your home is safe"))
-                           print("No Gas/smoke Detected, Your home is safe")
+                           print("Gas/smoke Detected, DANGER!")
                            reply = hologram.sendSMS(phone, "No Gas/smoke Detected, Your home is safe")
                            time.sleep(0.5)
                   else:
