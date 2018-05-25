@@ -113,7 +113,7 @@ if __name__ =='__main__':
                   break
     
 
-GPIO.cleanup()
+end
          
          
 
