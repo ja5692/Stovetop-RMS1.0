@@ -14,7 +14,7 @@ SPIMOSI = 10
 SPICS = 8
 smokesensor_dpin = 26
 smokesensor_apin = 0
-#*******************************************************************************************************
+
 credentials = {"devicekey":"2tVU6Pnf"}    #Replace with your unique SIM device key
                                           #Instantiating a hologram instance
 hologram = HologramCloud(credentials, network='cellular', authentication_type="csrpsk")
@@ -31,19 +31,19 @@ else:
     recv = hologram.enableSMS()
 
 
-#port init******************************************************************************************
+#port init
 def init():
          GPIO.setwarnings(False)
-         GPIO.cleanup()			                             #clean up at the end of your script
-         GPIO.setmode(GPIO.BCM)		                       #to specify whilch pin numbering system
-                                                         # set up the SPI interface pins
+         GPIO.cleanup()			#clean up at the end of your script
+         GPIO.setmode(GPIO.BCM)		#to specify whilch pin numbering system
+         # set up the SPI interface pins
          GPIO.setup(SPIMOSI, GPIO.OUT)
          GPIO.setup(SPIMISO, GPIO.IN)
          GPIO.setup(SPICLK, GPIO.OUT)
          GPIO.setup(SPICS, GPIO.OUT)
          GPIO.setup(smokesensor_dpin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
-                                  #read SPI data from MCP3008(or MCP3204) chip,8 possible adc's (0 thru 7)
+#read SPI data from MCP3008(or MCP3204) chip,8 possible adc's (0 thru 7)
 def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         if ((adcnum > 7) or (adcnum < 0)):
                 return -1
@@ -77,7 +77,6 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
-
 #main ioop
 def main():
          init()
@@ -90,7 +89,8 @@ def main():
                   else:
                            print("DANGER!! Gas leakege detected!!")
                            break
-                 
+                  count += 1
+                  time.sleep(1)
 
                     
 while True:
