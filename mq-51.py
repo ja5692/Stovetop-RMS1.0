@@ -89,7 +89,7 @@ def main():
                   else:
                            print("DANGER!! Gas leakege detected!!")
                            break
-                  global count < 1
+                  count = 1
                   time.sleep(1)
 
                     
@@ -101,6 +101,7 @@ while True:
 
         if message.lower() in "gas": #If user enters keyword
             main()
+            quit()
     time.sleep(1)
 
 hologram.network.disconnect()
