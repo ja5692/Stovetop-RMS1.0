@@ -5,7 +5,7 @@ import time
 import sys
 import Adafruit_DHT
 from RPIO import PWM
-mintemp = 38                             #Minimum temperature required to trigger the "stove on" status
+mintemp = 35                             #Minimum temperature required to trigger the "stove on" status
 sensor = Adafruit_DHT.DHT11               #Sensor type. 
 dhtpin = 4                                #GPIO pin the DHT is connected to
 
