@@ -82,8 +82,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
        
 #main ioop
 def main():
-         init()
-printed = False   
+         init()   
          while True:
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
@@ -94,9 +93,8 @@ printed = False
                    
                   else:
                            print("DANGER!! Gas leakege detected!!")
-                           break
-                  count += 1
-                  time.sleep(1)
+                           return
+                  
                        
 while True:
     sms_obj = hologram.popReceivedSMS()
