@@ -6,8 +6,8 @@ import threading
 import sys
 
 
-# **********************************************change these as desired - they're the pins connected from the
-# **********************************************SPI port on the ADC to the pi
+# change these as desired - they're the pins connected from the
+# SPI port on the ADC to the pi
 SPICLK = 11
 SPIMISO = 9
 SPIMOSI = 10
@@ -15,8 +15,8 @@ SPICS = 8
 smokesensor_dpin = 26
 smokesensor_apin = 0
 
-credentials = {"devicekey":"2tVU6Pnf"}    #******************************Replace with your unique SIM device key
-                                          #******************************Instantiating a hologram instance
+credentials = {"devicekey":"2tVU6Pnf"}    #Replace with your unique SIM device key
+                                          #Instantiating a hologram instance
 hologram = HologramCloud(credentials, network='cellular', authentication_type="csrpsk")
 
 result = hologram.network.connect()
@@ -27,8 +27,7 @@ if result == False:
 else:
     print "Connection successful!"
     print "Hologram is online!"
-    
-#************************************************Enables Hologram to listen for incoming SMS messages
+                                           #Enables Hologram to listen for incoming SMS messages
     recv = hologram.enableSMS()
 
 
@@ -44,7 +43,7 @@ def init():
          GPIO.setup(SPICS, GPIO.OUT)
          GPIO.setup(smokesensor_dpin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
-#***************************************************************read SPI data from MCP3008(or MCP3204) chip,8 possible adc's (0 thru 7)
+#read SPI data from MCP3008(or MCP3204) chip,8 possible adc's (0 thru 7)
 def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         if ((adcnum > 7) or (adcnum < 0)):
                 return -1
@@ -78,21 +77,20 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
-#***************************************************************************************************main loop
+#main ioop
 def main():
          init()
          while True:
                   smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
-                  if GPIO.input(smokesensor_dpin):
+                  if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas Leak Detected"))
                            print("No Gas Leak Detected")
                            time.sleep(0.5)
                   else:
-                           print("DANGER!! Gas leakage detected!!")
+                           print("DANGER!! Gas leakege detected!!")
                            break
                   count = 0
                   time.sleep(1)
-                
 
                     
 while True:
