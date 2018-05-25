@@ -92,7 +92,7 @@ def main():
                            break
                   count = 0
                   time.sleep(1)
-         break
+                  return
 
                     
 while True:
