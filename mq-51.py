@@ -86,10 +86,11 @@ def main():
                   if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas Leak Detected"))
                            print("No Gas Leak Detected")
                            time.sleep(0.5)
-                    break
+                   
                   else:
                            print("DANGER!! Gas leakege detected!!")
-                  break
+                           break
+                       
                        
                  
 
