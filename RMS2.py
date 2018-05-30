@@ -10,7 +10,7 @@ import json         #used to store and communicate information to other products
 import Adafruit_DHT #sensor library
 #*******************************************************************************
 pin = 4 
-tempthreshold = 35                           
+tempthreshold = 22                           
 tempsensor = Adafruit_DHT.DHT11              
                                
 #*After establishing Connection Hologram will listen for messages until stopped*
