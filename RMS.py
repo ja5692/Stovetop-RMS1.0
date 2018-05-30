@@ -38,7 +38,7 @@ def rms():
     if temperature <= tempthreshold:
                                            
         print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(temperature ) + "C"
-        reply = nova.sendSMS(phone, "YOUR STOVE IS OFF. " + "TEMPERATURE: " + str(temperature) + "C")
+        reply = nova.sendSMS(phone, "YOUR STOVE IS OFF. " + "TEMPERATURE DETECTED: " + str(temperature) + "C")
 
     else:
                                            
