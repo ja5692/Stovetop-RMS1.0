@@ -32,18 +32,18 @@ else:
 #***********************Stove on or off Differenciation*************************
 def rms():
   
-    tempreading = Adafruit_DHT.read_retry(tempsensor, pin)
-    tempreading = float('{0:0.1f}'.format(tempreading))
+    humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
+    temperature  = float('{0:0.1f}'.format(temperature ))
                           
-    if tempreading <= tempthreshold:
+    if temperature <= tempthreshold:
                                            
-        print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(tempreading) + "C"
-        reply = nova.sendSMS(phone, "STOVE IS OFF" + "TEMPERATURE: " + str(tempreading) + "C" "YOUR HOME IS SAFE")
+        print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(temperature ) + "C"
+        reply = nova.sendSMS(phone, "STOVE IS OFF" + "TEMPERATURE: " + str(temperature ) + "C" "YOUR HOME IS SAFE")
 
     else:
                                            
-        print "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE: " + str(tempreading) + "C"
-        reply = nova.sendSMS(phone, "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE:  " + str(tempreading) + "C")
+        print "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE: " + str(temperature ) + "C"
+        reply = nova.sendSMS(phone, "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE:  " + str(temperature) + "C")
                                            
         count = 0
         while True:
