@@ -51,17 +51,13 @@ def rms():
             if sms_obj is not None:
                 response = sms_obj.message.lower()
                 
-                if response == "ok":
-                                           
-                    print "ALERT CONFIRMED, TAKE NECESARY MEASURES, YOUR HOME IS AT RISK"
-                    reply = nova.sendSMS(phone, "ALERT CONFIRMED, TAKE NECESARY MEASURES, YOUR HOME IS AT RISK")
-                    break
+               
                         
-                elif count >= 10:
+            elif count >= 1:
                                            
-                    print "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED."
-                    reply = nova.sendSMS(phone, "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED..RETURNING TO STANDBY.")
-                    break
+                print "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED."
+                    
+                break
             count += 1
             time.sleep(1)
 #************************Nova interaction with user*****************************
