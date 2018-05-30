@@ -33,7 +33,7 @@ else:
 def rms():
   
     humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
-    temperature  = float('{0:0.1f}'.format(temperature ))
+    temperature = float('{0:0.1f}'.format(temperature))
                           
     if temperature <= tempthreshold:
                                            
