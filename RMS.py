@@ -1,16 +1,20 @@
-#***************************************************************************************************************************************
+#Guidelines used as reference in the implementation of this script**************
+#https://hologram.io/docs/reference/cloud/python-sdk/***************************
+#https://github.com/hologram-io/hologram-python*********************************
+#*******************************************************************************
 from Hologram.HologramCloud import HologramCloud
 import threading
 import time
 import sys
-import json
-import Adafruit_DHT
-#***************************************************************************************************************************************
+import json         #used to store and communicate information to other products
+import Adafruit_DHT #sensor library
+#*******************************************************************************
 pin = 4 
 tempthreshold = 35                           
 tempsensor = Adafruit_DHT.DHT11              
                                
-#****************************After establishing Connection Hologram will listen for messages until stopped*******************************
+#*After establishing Connection Hologram will listen for messages until stopped*
+
 qualifications = {"devicekey":"2tVU6Pnf"}   
                                          
 nova = HologramCloud(qualifications, network='cellular', authentication_type="csrpsk")
@@ -25,7 +29,7 @@ else:
     print "GSM MODULE CONNECTED TO NETWORK"
                                           
     recv = nova.enableSMS()
-#*************************************************Stove on or off Differencitation*************************************************************
+#***********************Stove on or off Differenciation*************************
 def rms():
   
     tempreading = Adafruit_DHT.read_retry(tempsensor, pin)
@@ -61,7 +65,7 @@ def rms():
                     break
             count += 1
             time.sleep(1)
-#************************************************************Nova interaction with user*********************************************************
+#************************Nova interaction with user*****************************
 while True:
     sms_obj = nova.popReceivedSMS()
     if sms_obj is not None:                
