@@ -69,10 +69,10 @@ def rms():
 while True:
     sms_obj = nova.popReceivedSMS()
     if sms_obj is not None:                
-        response = sms_obj.message
+        message = sms_obj.message
         phone = "+" + sms_obj.sender
 
-        if response.lower() in "stove": 
+        if message.lower() in "stove": 
             rms()
     time.sleep(1)
 
