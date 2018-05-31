@@ -56,26 +56,27 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
-#main ioop
+#main loop
 def main():
-         init()
-         while True:
-                  smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
-                  
-                  if GPIO.input(smokesensor_dpin):
-                           print("No Gas detected")
-                           time.sleep(0.5)
-                  else:
-                           print("Gas Detected, Danger")
-                           print("Current Gas AD vaule = " +str("%.2f"%((smokelevel/1024.)*5))+" V")
-                           time.sleep(0.5)
+     init()
+     while True:
+              smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
+
+              if GPIO.input(smokesensor_dpin)> 0.50 :
+                       if GPIO.input(smokesensor_dpin) > 0.50 :
+                           print("Gas leak")
+
+              else:
+                       print("Gas leakage")
+                       print("Current Gas value = " +str("%.2f"%((smokelevel/1024.)*5))+" V")
+                       time.sleep(0.5)
 
 if __name__ =='__main__':
-         try:
-                  main()
-                  pass
-         except KeyboardInterrupt:
-                  pass
+     try:
+              main()
+              pass
+     except KeyboardInterrupt:
+              pass
 
 GPIO.cleanup()
          
