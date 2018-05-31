@@ -108,7 +108,7 @@ def rms():
     else:
                                            
         print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C"
-        reply = nova.sendSMS(phone, "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE:  " + str(tempreading) + "C")
+        
         
         
                                            
@@ -121,13 +121,10 @@ def rms():
                 
                
                         
-            elif count >= 10:
+            elif count >= 25:
                                            
                 print "STOVE IS ON, YOUR HOME IS IN DANGER!."
-                reply = nova.sendSMS(phone, "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE:  " + str(tempreading) + "C")
-                print "DANGER!! Gas/smoke detected!!" 
-                reply = nova.sendSMS(phone, "DANGER!!  Gas/smoke detected!! ")
-        
+                print("DANGER!! Gas/smoke detected!!")
                 break
             count += 1
             time.sleep(1)
@@ -141,7 +138,7 @@ def main():
                   
                   if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas/smoke Detected, Your home is safe"))
                            print("No Gas/smoke Detected, Your home is safe")
-                           reply = nova.sendSMS(phone, "No Gas/smoke Detected, Your home is safe")
+                           
                            
                            time.sleep(0.5)
                   else:
@@ -154,11 +151,7 @@ def main():
                   
 
 #************************Nova interaction with user*****************************
-while True:
-    sms_obj = nova.popReceivedSMS()
-    if sms_obj is not None:                
-        message = sms_obj.message
-        phone = "+" + sms_obj.sender
+
 
         if __name__ == '__main__':
            Thread(target = main).start()
