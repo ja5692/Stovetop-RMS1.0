@@ -12,12 +12,12 @@ import json
 import threading
 import sys
 #*****************************MGP3008 pins**************************************
-CLK = 11
-MISO = 9
-MOSI = 10
-CS = 8
-digital_pin = 26
-analog_pin = 0
+SPICLK = 11
+SPIMISO = 9
+SPIMOSI = 10
+SPICS = 8
+smokesensor_dpin = 26
+smokesensor_apin = 0
 #*****************************Communication establishment***********************
 qualifications = {"devicekey":"2tVU6Pnf"}    
                                           
@@ -40,11 +40,11 @@ def port():
          GPIO.cleanup()			    
          GPIO.setmode(GPIO.BCM)		
                                    
-         GPIO.setup(MOSI, GPIO.OUT)
-         GPIO.setup(MISO, GPIO.IN)
-         GPIO.setup(CLK, GPIO.OUT)
-         GPIO.setup(CS, GPIO.OUT)
-         GPIO.setup(digital_pin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+         GPIO.setup(SPIMOSI, GPIO.OUT)
+         GPIO.setup(SPIMISO, GPIO.IN)
+         GPIO.setup(SPICLK, GPIO.OUT)
+         GPIO.setup(SPICS, GPIO.OUT)
+         GPIO.setup(smokesensor_dpin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
 #**************************data reading from the MGp3008************************
 def mgpread(adcnum, clockpin, mosipin, misopin, cspin):
@@ -84,9 +84,9 @@ def mgpread(adcnum, clockpin, mosipin, misopin, cspin):
 def mq5():
          port()
          while True:
-                  smokelevel=mgpread(analog_pin, CLK, MOSI, MISO, CS)
+                  smokelevel=adcread(analog_pin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
-                  if GPIO.input(digital_pin):
+                  if GPIO.input(smokesensor_dpin):
                            print("DANGER!! Gas/smoke detected!!)
                            reply = nova.sendSMS(phone, "No Gas/smoke Detected")
                            time.sleep(0.5)
@@ -102,7 +102,7 @@ def mq5():
 while True:
     sms_obj = nova.popReceivedSMS()
     if sms_obj is not None:         
-        response = sms_obj.message
+        message = sms_obj.message
         phone = "+" + sms_obj.sender
 
         if response.lower() in "gas":
