@@ -144,7 +144,7 @@ def main():
                            break
                   count = 2
                   time.sleep(1)
-                  wait()
+                  pass
                   
 
 #************************Nova interaction with user*****************************
