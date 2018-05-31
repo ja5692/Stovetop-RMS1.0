@@ -143,6 +143,6 @@ def main():
 
 #************************Nova interaction with user*****************************
 if __name__ == '__main__':
-    Thread(target = rms).start()
     Thread(target = main).start()
+    Thread(target = rms).start()
 nova.network.disconnect()
