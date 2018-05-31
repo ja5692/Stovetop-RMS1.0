@@ -87,11 +87,11 @@ def mq5():
                   smokelevel=adcread(analog_pin, SPICLK, SPIMOSI, SPIMISO, SPICS)
                   
                   if GPIO.input(smokesensor_dpin):
-                           print("DANGER!! Gas/smoke detected!!)
+                           print "DANGER!! Gas/smoke detected!!"
                            reply = nova.sendSMS(phone, "No Gas/smoke Detected")
                            time.sleep(0.5)
                   else:
-                           print("DANGER!! Gas/smoke detected!!")
+                           print "DANGER!! Gas/smoke detected!!" 
                            reply = nova.sendSMS(phone, "DANGER!! Gas / smoke detected!!")
                            break
                   count = 1
