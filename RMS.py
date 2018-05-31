@@ -1,6 +1,13 @@
 #Guidelines used as reference in the implementation of this script**************
 #https://hologram.io/docs/reference/cloud/python-sdk/***************************
 #https://github.com/hologram-io/hologram-python*********************************
+#https://github.com/SeeedDocument/Grove_Gas_Sensor_MQ5/blob/master/Grove_Gas_Sensor_MQ5.md
+#https://github.com/intel-iot-devkit/upm/blob/master/examples/python/mq5.py
+#https://tutorials-raspberrypi.com/configure-and-read-out-the-raspberry-pi-gas-sensor-mq-x/
+#http://www.knight-of-pi.org/digital-sensors-and-the-raspberry-pi-with-the-smoke-detector-mq-x-as-example/
+#http://www.learningaboutelectronics.com/Articles/MQ-2-smoke-sensor-circuit-with-raspberry-pi.php
+#https://www.hackster.io/jonathan-xu/stovehacks-remote-stove-monitoring-control-system-d1cc00
+#https://www.raspberrypi.org/forums/viewtopic.php?t=130595
 #*******************************************************************************
 from Hologram.HologramCloud import HologramCloud
 import threading
@@ -38,12 +45,11 @@ else:
                                           
     recv = nova.enableSMS()
 
-#port init**********************************************************************
-
+#*************************Port Cleaning and Set up******************************
 def init():
          GPIO.setwarnings(False)
-         GPIO.cleanup()			#clean up at the end of your script
-         GPIO.setmode(GPIO.BCM)		#to specify whilch pin numbering system
+         GPIO.cleanup()			
+         GPIO.setmode(GPIO.BCM)	
          # set up the SPI interface pins
          GPIO.setup(SPIMOSI, GPIO.OUT)
          GPIO.setup(SPIMISO, GPIO.IN)
@@ -57,12 +63,12 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
                 return -1
         GPIO.output(cspin, True)	
 
-        GPIO.output(clockpin, False)  # start clock low
-        GPIO.output(cspin, False)     # bring CS low
+        GPIO.output(clockpin, False)  
+        GPIO.output(cspin, False)     
 
         commandout = adcnum
-        commandout |= 0x18  # start bit + single-ended bit
-        commandout <<= 3    # we only need to send 5 bits here
+        commandout |= 0x18  
+        commandout <<= 3    
         for i in range(5):
                 if (commandout & 0x80):
                         GPIO.output(mosipin, True)
@@ -73,7 +79,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
                 GPIO.output(clockpin, False)
 
         adcout = 0
-        # read in one empty bit, one null bit and 10 ADC bits
+        
         for i in range(12):
                 GPIO.output(clockpin, True)
                 GPIO.output(clockpin, False)
@@ -83,46 +89,30 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
 
         GPIO.output(cspin, True)
         
-        adcout >>= 1       # first bit is 'null' so drop it
+        adcout >>= 1       
         return adcout
 
 
 
 #*******************************************************************************
-#***********************Stove on or off Differenciation*************************
+#***********************Stove on or off and gas/smoke Detection*****************
 def rms():
   
     humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
     temperature = float('{0:0.1f}'.format(temperature))
                           
-    if temperature <= tempthreshold:
+    if temperature >= tempthreshold:
                                            
-        print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(temperature ) + "C"
-        
+        print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C""
+        count >= 10:                                   
+        print "STOVE IS ON. DANGER!!!! " + "TEMPERATURE: " + str(temperature ) + "C"
+        break
     else:
-                                           
-        print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C"
+    pass    
         
+    count += 1
+    time.sleep(1)
                                            
-        count = 0
-        while True:
-                                           
-            sms_obj = nova.popReceivedSMS()
-            if sms_obj is not None:
-                response = sms_obj.message.lower()
-                
-               
-                        
-            elif count >= 10:
-                                           
-                print "STOVE IS ON, YOUR HOME IS IN DANGER!."
-                    
-                break
-            count += 1
-            time.sleep(1)
-            
-            
-            
 def main():
          init()
          while True:
