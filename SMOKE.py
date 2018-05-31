@@ -65,14 +65,14 @@ def main():
               if GPIO.input(smokesensor_dpin)> 0.35 :
                   print("No Gas leak")
                   time.sleep(0.5)
-                  break
+                  
 
 
               else:
                        print("Gas leakage")
                        print("Current Gas value = " +str("%.2f"%((smokelevel/1024.)*5))+" V")
                        time.sleep(0.5)
-
+                       break
 if __name__ =='__main__':
      try:
               main()
