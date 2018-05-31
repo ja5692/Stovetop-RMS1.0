@@ -38,12 +38,12 @@ def rms():
     if tempreading <= tempthreshold:
                                            
         print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(tempreading) + "C"
-        reply = nova.sendSMS(phone, "STOVE IS OFF" + "TEMPERATURE: " + str(tempreading) + "C" "YOUR HOME IS SAFE")
+        reply = nova.sendSMS(phone, "STOVE IS OFF" + "TEMPERATURE: " + str(tempreading) + "C" "YOUR HOME IS SAFE"+ " No Smoke/Gas Detected")
 
     else:
                                            
         print "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE: " + str(tempreading) + "C"
-        reply = nova.sendSMS(phone, "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE:  " + str(tempreading) + "C")
+        reply = nova.sendSMS(phone, "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE:  " + str(tempreading) + "C" + " Smoke/Gas Detected" )
                                            
         count = 0
         while True:
@@ -69,10 +69,10 @@ def rms():
 while True:
     sms_obj = nova.popReceivedSMS()
     if sms_obj is not None:                
-        response = sms_obj.message
+        message = sms_obj.message
         phone = "+" + sms_obj.sender
 
-        if response.lower() in "stove": 
+        if message.lower() in "stove": 
             rms()
     time.sleep(1)
 
