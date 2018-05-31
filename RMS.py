@@ -25,7 +25,7 @@ SPICS = 8
 smokesensor_dpin = 26
 smokesensor_apin = 0
 pin = 4 
-tempthreshold = 28                           
+tempthreshold = 22                           
 tempsensor = Adafruit_DHT.DHT11              
                                
 #*After establishing Connection Hologram will listen for messages until stopped*
@@ -109,8 +109,6 @@ def rms():
                                            
         print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C"
         
-        
-        
                                            
         count = 0
         while True:
@@ -121,10 +119,10 @@ def rms():
                 
                
                         
-            elif count >= 25:
+            elif count >= 10:
                                            
                 print "STOVE IS ON, YOUR HOME IS IN DANGER!."
-                print("DANGER!! Gas/smoke detected!!")
+                print "DANGER!! Gas/smoke detected!!"    
                 break
             count += 1
             time.sleep(1)
@@ -139,7 +137,6 @@ def main():
                   if GPIO.input(smokesensor_dpin):#hologram.sendMessage(json.dumps("No Gas/smoke Detected, Your home is safe"))
                            print("No Gas/smoke Detected, Your home is safe")
                            
-                           
                            time.sleep(0.5)
                   else:
                            print("DANGER!! Gas/smoke detected!!")
@@ -151,11 +148,7 @@ def main():
                   
 
 #************************Nova interaction with user*****************************
-
-
-        if __name__ == '__main__':
-           Thread(target = main).start()
-           Thread(target = rms).start()
-    time.sleep(1)
-      
+if __name__ == '__main__':
+    Thread(target = main).start()
+    Thread(target = rms).start()
 nova.network.disconnect()
