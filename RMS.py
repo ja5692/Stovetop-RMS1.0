@@ -99,7 +99,8 @@ def rms():
         print "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE: " + str(temperature ) + "C"
         
     else:
-         pass
+                                           
+        pass 
         
                                            
         count = 0
@@ -111,9 +112,9 @@ def rms():
                 
                
                         
-            elif count >= 10:
+            elif count >= 30:
                                            
-                print "NO RESPONSE WAS RECIEVED AFTER 10 SECONDS, ALERT IGNORED."
+                print "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED."
                     
                 break
             count += 1
