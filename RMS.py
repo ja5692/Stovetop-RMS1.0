@@ -25,7 +25,7 @@ SPICS = 8
 smokesensor_dpin = 26
 smokesensor_apin = 0
 pin = 4 
-tempthreshold = 25                           
+tempthreshold = 22                           
 tempsensor = Adafruit_DHT.DHT11              
                                
 #*After establishing Connection Hologram will listen for messages until stopped*
@@ -95,7 +95,7 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
 
 
 #*******************************************************************************
-#***********************Stove on or off and gas/smoke Differenciation***********
+#***********************Stove on or off and gas/smoke Differenciation*************************
 def rms():
   
     humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
@@ -119,7 +119,7 @@ def rms():
                 
                
                         
-            elif count >= 30:
+            elif count >= 10:
                                            
                 print "STOVE IS ON, YOUR HOME IS IN DANGER!."
                 print "DANGER!! Gas/smoke detected!!"    
@@ -144,7 +144,7 @@ def main():
                            break
                   count = 2
                   time.sleep(1)
-                  quit()
+                  wait()
                   
 
 #************************Nova interaction with user*****************************
