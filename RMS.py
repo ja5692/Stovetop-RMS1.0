@@ -154,7 +154,15 @@ def main():
                   
 
 #************************Nova interaction with user*****************************
-if __name__ == '__main__':
-    Thread(target = main).start()
-    Thread(target = rms).start()
+while True:
+    sms_obj = nova.popReceivedSMS()
+    if sms_obj is None:                
+        response = sms_obj.message
+        phone = "+" + sms_obj.sender
+
+        if __name__ == '__main__':
+           Thread(target = main).start()
+           Thread(target = rms).start()
+    time.sleep(1)
+      
 nova.network.disconnect()
