@@ -99,7 +99,7 @@ def rms():
         print "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE: " + str(temperature ) + "C"
         
     else:
-    pass
+         pass
         
                                            
         count = 0
