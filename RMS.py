@@ -95,24 +95,40 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
 
 
 #*******************************************************************************
-#***********************Stove on or off and gas/smoke Detection*****************
+#***********************Stove on or off and gas/smoke Differenciation***********
 def rms():
   
     humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
     temperature = float('{0:0.1f}'.format(temperature))
                           
-    if temperature >= tempthreshold:
+    if temperature <= tempthreshold:
                                            
-        print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C""
-        count >= 10:                                   
-        print "STOVE IS ON. DANGER!!!! " + "TEMPERATURE: " + str(temperature ) + "C"
-        break
-    else:
-    pass    
+        print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(temperature ) + "C"
         
-    count += 1
-    time.sleep(1)
+    else:
                                            
+        print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C"
+        
+                                           
+        count = 0
+        while True:
+                                           
+            sms_obj = nova.popReceivedSMS()
+            if sms_obj is not None:
+                response = sms_obj.message.lower()
+                
+               
+                        
+            elif count >= 10:
+                                           
+                print "STOVE IS ON, YOUR HOME IS IN DANGER!."
+                    
+                break
+            count += 1
+            time.sleep(1)
+            
+            
+            
 def main():
          init()
          while True:
