@@ -4,7 +4,6 @@
 #*******************************************************************************
 from Hologram.HologramCloud import HologramCloud
 import threading
-from threading import Thread
 import RPi.GPIO as GPIO
 import time
 import sys
@@ -95,13 +94,12 @@ def rms():
     humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
     temperature = float('{0:0.1f}'.format(temperature))
                           
-    if temperature <= tempthreshold:
-                                           
-        print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(temperature ) + "C"
-        
-    else:
+    if temperature >= tempthreshold:
                                            
         print "STOVE IS ON. YOUR HOME IS AT RISK. PLEASE CONFIRM THIS ALERT HAS BEEN RECIEVED " + "TEMPERATURE: " + str(temperature ) + "C"
+        
+    else:
+    pass
         
                                            
         count = 0
@@ -113,9 +111,9 @@ def rms():
                 
                
                         
-            elif count >= 30:
+            elif count >= 10:
                                            
-                print "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED."
+                print "NO RESPONSE WAS RECIEVED AFTER 10 SECONDS, ALERT IGNORED."
                     
                 break
             count += 1
@@ -142,7 +140,15 @@ def main():
                   
 
 #************************Nova interaction with user*****************************
-if __name__ == '__main__':
-    Thread(target = rms).start()
-    Thread(target = main).start()
+while True:
+    sms_obj = nova.popReceivedSMS()
+    if sms_obj is not None:                
+        message = sms_obj.message
+        phone = "+" + sms_obj.sender
 
+        if message.lower() in "stove": 
+            rms()
+            main()
+    time.sleep(1)
+
+nova.network.disconnect()
