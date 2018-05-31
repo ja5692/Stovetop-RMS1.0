@@ -1,29 +1,55 @@
+#Guidelines used as reference in the implementation of this script**************
+#https://hologram.io/docs/reference/cloud/python-sdk/***************************
+#https://github.com/hologram-io/hologram-python*********************************
+#*******************************************************************************
+from Hologram.HologramCloud import HologramCloud
+import threading
+from threading import Thread
 import RPi.GPIO as GPIO
 import time
+import sys
+import json         #used to store and communicate information to other products
+import Adafruit_DHT #sensor library
+#*******************************************************************************
+CLK = 11
+MISO = 9
+MOSI = 10
+CS = 8
+digital_dpin = 26
+analog_apin = 0
+pin = 4 
+tempthreshold = 22                           
+tempsensor = Adafruit_DHT.DHT11              
+                               
+#****************************COMMUNICATION ESTABLISHMENT*************************
+qualifications = {"devicekey":"2tVU6Pnf"}   
+                                         
+nova = HologramCloud(qualifications, network='cellular', authentication_type="csrpsk")
 
-# change these as desired - they're the pins connected from the
-# SPI port on the ADC to the Cobbler
-SPICLK = 11
-SPIMISO = 9
-SPIMOSI = 10
-SPICS = 8
-smokesensor_dpin = 26
-smokesensor_apin = 0
+outcome = nova.network.connect()
+print 'CONNECTION STATUS: ' + str(nova.network.getConnectionStatus())
 
-#port init
+if outcome == False:
+    print "FAILED TO CONNECT TO NETWORK"
+else:
+    print "CONNECTION ESTABLISHED"
+    print "GSM MODULE CONNECTED TO NETWORK"
+                                          
+    recv = nova.enableSMS()
+#****************************Ports cleaning and setup ****************************
 def init():
          GPIO.setwarnings(False)
-         GPIO.cleanup()			#clean up at the end of your script
-         GPIO.setmode(GPIO.BCM)		#to specify whilch pin numbering system
+         GPIO.cleanup()			      #port cleaning
+         GPIO.setmode(GPIO.BCM)		
          # set up the SPI interface pins
-         GPIO.setup(SPIMOSI, GPIO.OUT)
-         GPIO.setup(SPIMISO, GPIO.IN)
-         GPIO.setup(SPICLK, GPIO.OUT)
-         GPIO.setup(SPICS, GPIO.OUT)
-         GPIO.setup(smokesensor_dpin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+         GPIO.setup(MOSI, GPIO.OUT)
+         GPIO.setup(MISO, GPIO.IN)
+         GPIO.setup(CLK, GPIO.OUT)
+         GPIO.setup(CS, GPIO.OUT)
+         GPIO.setup(digital_dpin,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
-#read SPI data from MCP3008(or MCP3204) chip,8 possible adc's (0 thru 7)
-def readadc(adcnum, clockpin, mosipin, misopin, cspin):
+#Data reading and interpretation from MCP3008 analog to digital converter ********
+def mcpread(adcnum, clockpin, mosipin, misopin, cspin):
         if ((adcnum > 7) or (adcnum < 0)):
                 return -1
         GPIO.output(cspin, True)	
@@ -56,26 +82,60 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         
         adcout >>= 1       # first bit is 'null' so drop it
         return adcout
-#main loop
-def main():
-     init()
-     while True:
-              smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
-
-              if GPIO.input(smokesensor_dpin)< 0 :
-                       if GPIO.input(smokesensor_dpin)< 0 :
-                           print("No Gas Leak")
+#*******************************************************************************
+#***********************Stove and gas on or off Differenciation*************************
+def rms():
+  
+    humidity, temperature = Adafruit_DHT.read_retry(tempsensor, pin)
+    temperature = float('{0:0.1f}'.format(temperature))
+                          
+    if temperature <= tempthreshold:
+                                           
+        print "STOVE IS OFF " + "TEMPERATURE DETECTED:" + str(temperature ) + "C"
+        
+    else:
+                                           
+        print "STOVE IS ON. YOUR HOME IS AT RISK. " + "TEMPERATURE: " + str(temperature ) + "C"
+        
+                                           
+        count = 0
+        while True:
+                                           
+            sms_obj = nova.popReceivedSMS()
+            if sms_obj is not None:
+                response = sms_obj.message.lower()
+                
+               
+                        
+            elif count >= 10:
+                                           
+                print "STOVE IS ON, YOUR HOME IS IN DANGER!."
+                    
+                break
+            count += 1
+            time.sleep(1)
+            
+            
+            
+def mq5():
+         init()
+         while True:
+                  smokelevel=readadc(analog_apin, CLK, MOSI, MISO, CS)
+                  
+                  if GPIO.input(digital_dpin):
+                           print("No Gas/smoke Detected, Your home is safe")
+                           
                            time.sleep(0.5)
- 
-
-              else:
-                       print("Gas leak!")
-                       print"Current Gas AD vaule = " +str("%.2f"%((smokelevel/1024.)*5))+" V"
-                       time.sleep(0.5)
-
-if __name__ =='__main__':
-     try:
-              main()
-              pass
-     except KeyboardInterrupt:
-              pass
+                  else:
+                           print("DANGER!! Gas/smoke detected!!")
+                           
+                           break
+                  count = 2
+                  time.sleep(1)
+                  quit()
+                  
+#************************Nova interaction with user*****************************
+if __name__ == '__main__':
+    Thread(target = mq5).start()
+    Thread(target = rms).start()
+nova.network.disconnect()
