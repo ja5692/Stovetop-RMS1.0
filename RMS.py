@@ -156,7 +156,7 @@ def main():
 #************************Nova interaction with user*****************************
 while True:
     sms_obj = nova.popReceivedSMS()
-    if sms_obj is None:                
+    if sms_obj is not None:                
         message = sms_obj.message
         phone = "+" + sms_obj.sender
 
