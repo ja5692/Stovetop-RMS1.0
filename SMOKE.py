@@ -63,8 +63,10 @@ def main():
               smokelevel=readadc(smokesensor_apin, SPICLK, SPIMOSI, SPIMISO, SPICS)
 
               if GPIO.input(smokesensor_dpin)> 0.35 :
-                       if GPIO.input(smokesensor_dpin) > 0.35 :
-                           print("No Gas leak")
+                  print("No Gas leak")
+                  time.sleep(0.5)
+                  break
+
 
               else:
                        print("Gas leakage")
