@@ -4,6 +4,7 @@
 #*******************************************************************************
 from Hologram.HologramCloud import HologramCloud
 import threading
+from threading import Thread
 import RPi.GPIO as GPIO
 import time
 import sys
@@ -141,15 +142,7 @@ def main():
                   
 
 #************************Nova interaction with user*****************************
-while True:
-    sms_obj = nova.popReceivedSMS()
-    if sms_obj is not None:                
-        message = sms_obj.message
-        phone = "+" + sms_obj.sender
+if __name__ == '__main__':
+    Thread(target = rms).start()
+    Thread(target = main).start()
 
-        if message.lower() in "stove": 
-            rms()
-            main()
-    time.sleep(1)
-
-nova.network.disconnect()
