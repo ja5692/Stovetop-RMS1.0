@@ -53,7 +53,7 @@ def rms():
                 
                
                         
-            elif count >= 1:
+            elif count >= 30:
                                            
                 print "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED."
                     
