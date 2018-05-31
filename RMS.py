@@ -113,9 +113,9 @@ def rms():
                 
                
                         
-            elif count >= 120:
+            elif count >= 10:
                                            
-                print "NO RESPONSE WAS RECIEVED AFTER 10 MINUTES, ALERT IGNORED."
+                print "STOVE IS ON, YOUR HOME IS IN DANGER!."
                     
                 break
             count += 1
@@ -136,9 +136,9 @@ def main():
                            print("DANGER!! Gas/smoke detected!!")
                            
                            break
-                  count = 1
+                  count = 2
                   time.sleep(1)
-                
+                  quit()
                   
 
 #************************Nova interaction with user*****************************
