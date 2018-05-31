@@ -75,8 +75,8 @@ def main():
                        break    
                        
 if __name__ =='__main__':
-     try:
-              main()
-              GPIO.cleanup()
-         
-         
+       try:
+                main()
+      
+  
+  GPIO.cleanup()
