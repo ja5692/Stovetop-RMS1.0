@@ -72,13 +72,11 @@ def main():
                        print("Gas leakage")
                        print("Current Gas value = " +str("%.2f"%((smokelevel/1024.)*5))+" V")
                        time.sleep(0.5)
-                       break
+                       break    
+                       
 if __name__ =='__main__':
      try:
               main()
-              pass
-     except KeyboardInterrupt:
-              pass
 
 GPIO.cleanup()
          
